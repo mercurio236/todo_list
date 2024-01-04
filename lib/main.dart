@@ -11,7 +11,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: const TodoListPage(),
+      home: TodoListPage(),
     ); // o MaterialApp é uma função muito importante, aqui contem tudo
   }
+
 }
