@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo_list/models/todo.dart';
 import 'package:todo_list/widgets/todo_list_item.dart';
 
 class TodoListPage extends StatefulWidget {
@@ -12,12 +13,13 @@ class TodoListPage extends StatefulWidget {
 class _TodoListPageState extends State<TodoListPage> {
   final TextEditingController todoController = TextEditingController();
 
-  List<String> todos = [];
+  List<Todo> todos = [];
 
   void addTodo() {
     String text = todoController.text;
     setState(() {
-      todos.add(text);
+      Todo newTodo = Todo(title: text, date: DateTime.now());
+      todos.add(newTodo);
     });
     todoController.clear();
   }
@@ -68,7 +70,7 @@ class _TodoListPageState extends State<TodoListPage> {
               child: ListView(
                 shrinkWrap: true, //vai fazer o calculo do tamanho da tela
                 children: [
-                  for (String todo in todos) TodoListItem(title: todo)
+                  for (Todo todo in todos) TodoListItem(todo: todo)
                 ],
               ),
             ),
