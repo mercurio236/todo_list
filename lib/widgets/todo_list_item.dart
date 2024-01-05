@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 
 class TodoListItem extends StatelessWidget {
-  TodoListItem({super.key});
+  const TodoListItem({required this.title, super.key});
+
+  final String title;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(16),
+      margin: const EdgeInsets.symmetric(vertical: 2),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(4),
         color: Colors.grey[200],
+        
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -19,11 +23,12 @@ class TodoListItem extends StatelessWidget {
             style: TextStyle(fontSize: 12),
           ),
           Text(
-            'Tarefa 1',
+            title,
             style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
           )
         ],
       ),
     );
+    
   }
 }

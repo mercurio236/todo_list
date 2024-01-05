@@ -24,10 +24,11 @@ class _TodoListPageState extends State<TodoListPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return SafeArea(
+        child: Scaffold(
       body: Center(
           child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
+        padding: const EdgeInsets.all(16),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -67,9 +68,7 @@ class _TodoListPageState extends State<TodoListPage> {
               child: ListView(
                 shrinkWrap: true, //vai fazer o calculo do tamanho da tela
                 children: [
-                  for (String todo in todos)
-                    TodoListItem()
-                     
+                  for (String todo in todos) TodoListItem(title: todo)
                 ],
               ),
             ),
@@ -101,6 +100,6 @@ class _TodoListPageState extends State<TodoListPage> {
           ],
         ),
       )),
-    );
+    ));
   }
 }

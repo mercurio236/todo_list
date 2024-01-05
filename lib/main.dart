@@ -11,6 +11,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false, //remove o banner de debbug
       home: TodoListPage(),
     ); // o MaterialApp é uma função muito importante, aqui contem tudo
   }
