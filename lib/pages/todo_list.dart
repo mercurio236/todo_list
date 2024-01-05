@@ -15,6 +15,9 @@ class _TodoListPageState extends State<TodoListPage> {
 
   List<Todo> todos = [];
 
+  Todo? deletedTodo;
+  int? deletedTodoPos;
+
   void addTodo() {
     String text = todoController.text;
     setState(() {
@@ -25,12 +28,44 @@ class _TodoListPageState extends State<TodoListPage> {
   }
 
   void onDelete(Todo todo) {
+    deletedTodo = todo; //tarefa removida
+    deletedTodoPos = todos.indexOf(todo); // posição na lista
+
     setState(() {
       todos.remove(todo);
     });
+
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Row(
+        children: [
+          Icon(
+            Icons.delete,
+            color: Colors.white,
+          ),
+          SizedBox(width: 5),
+          Expanded(
+              child: Text(
+            'Tarefa ${todo.title} foi removida com sucesso.',
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          ))
+        ],
+      ),
+      backgroundColor: Colors.red,
+      action: SnackBarAction(
+        label: 'Desfazer',
+        onPressed: () {
+          setState(() {
+            todos.insert(deletedTodoPos!, deletedTodo!);
+          });
+        },
+        textColor: Colors.white,
+      ),
+      duration: const Duration(seconds: 5),
+    ));
   }
 
-  void onDeleAll(){
+  void onDeleAll() {
     setState(() {
       todos.clear();
     });
