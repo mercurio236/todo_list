@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo_list/widgets/todo_list_item.dart';
 
 class TodoListPage extends StatefulWidget {
   //se precisar ter um estado na página é só transformar a extensão em Stateless
@@ -10,8 +11,6 @@ class TodoListPage extends StatefulWidget {
 
 class _TodoListPageState extends State<TodoListPage> {
   final TextEditingController todoController = TextEditingController();
-
-  final DateTime date = DateTime.now();
 
   List<String> todos = [];
 
@@ -63,16 +62,14 @@ class _TodoListPageState extends State<TodoListPage> {
             SizedBox(
               height: 16,
             ),
-            Flexible(// faz com que ocupe o máximo de tamanho
+            Flexible(
+              // faz com que ocupe o máximo de tamanho
               child: ListView(
                 shrinkWrap: true, //vai fazer o calculo do tamanho da tela
                 children: [
                   for (String todo in todos)
-                    ListTile(
-                      title: Text(todo),
-                      subtitle: Text('$date'),
-                      leading: Icon(Icons.file_copy),
-                    )
+                    TodoListItem()
+                     
                 ],
               ),
             ),
