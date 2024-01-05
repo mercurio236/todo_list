@@ -1,8 +1,27 @@
 import 'package:flutter/material.dart';
 
-class TodoListPage extends StatelessWidget {
+class TodoListPage extends StatefulWidget {
   //se precisar ter um estado na página é só transformar a extensão em Stateless
-  const TodoListPage({super.key});
+  TodoListPage({super.key});
+
+  @override
+  State<TodoListPage> createState() => _TodoListPageState();
+}
+
+class _TodoListPageState extends State<TodoListPage> {
+  final TextEditingController todoController = TextEditingController();
+
+  final DateTime date = DateTime.now();
+
+  List<String> todos = [];
+
+  void addTodo() {
+    String text = todoController.text;
+    setState(() {
+      todos.add(text);
+    });
+    todoController.clear();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,6 +36,7 @@ class TodoListPage extends StatelessWidget {
               children: [
                 Expanded(
                   child: TextField(
+                    controller: todoController,
                     decoration: InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: 'Adicione uma tarefa',
@@ -25,7 +45,7 @@ class TodoListPage extends StatelessWidget {
                 ),
                 SizedBox(width: 8),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: addTodo,
                   child: Icon(
                     Icons.add,
                     size: 30,
@@ -33,7 +53,7 @@ class TodoListPage extends StatelessWidget {
                   ),
                   style: ElevatedButton.styleFrom(
                       backgroundColor: Color(0xff00d7f3),
-                      padding: EdgeInsets.all(22),
+                      padding: EdgeInsets.all(20),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(6),
                       )),
@@ -43,21 +63,27 @@ class TodoListPage extends StatelessWidget {
             SizedBox(
               height: 16,
             ),
-            ListView(
-              shrinkWrap: true, //vai fazer o calculo do tamanho da tela
-              children: [
-                Container(
-                  color: Colors.red,
-                  height: 50,
-                )
-              ],
+            Flexible(// faz com que ocupe o máximo de tamanho
+              child: ListView(
+                shrinkWrap: true, //vai fazer o calculo do tamanho da tela
+                children: [
+                  for (String todo in todos)
+                    ListTile(
+                      title: Text(todo),
+                      subtitle: Text('$date'),
+                      leading: Icon(Icons.file_copy),
+                    )
+                ],
+              ),
             ),
             SizedBox(
               height: 16,
             ),
             Row(
               children: [
-                Expanded(child: Text('Você possui 0 tarefas pendentes')),
+                Expanded(
+                    child:
+                        Text('Você possui ${todos.length} tarefas pendentes')),
                 SizedBox(
                   width: 8,
                 ),
