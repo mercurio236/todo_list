@@ -4,7 +4,7 @@ import 'package:todo_list/widgets/todo_list_item.dart';
 
 class TodoListPage extends StatefulWidget {
   //se precisar ter um estado na página é só transformar a extensão em Stateless
-  TodoListPage({super.key});
+  const TodoListPage({super.key});
 
   @override
   State<TodoListPage> createState() => _TodoListPageState();
@@ -22,6 +22,18 @@ class _TodoListPageState extends State<TodoListPage> {
       todos.add(newTodo);
     });
     todoController.clear();
+  }
+
+  void onDelete(Todo todo) {
+    setState(() {
+      todos.remove(todo);
+    });
+  }
+
+  void onDeleAll(){
+    setState(() {
+      todos.clear();
+    });
   }
 
   @override
@@ -45,7 +57,7 @@ class _TodoListPageState extends State<TodoListPage> {
                         hintText: 'Ex. Estudar Flutter'),
                   ),
                 ),
-                SizedBox(width: 8),
+                const SizedBox(width: 8),
                 ElevatedButton(
                   onPressed: addTodo,
                   child: Icon(
@@ -55,14 +67,14 @@ class _TodoListPageState extends State<TodoListPage> {
                   ),
                   style: ElevatedButton.styleFrom(
                       backgroundColor: Color(0xff00d7f3),
-                      padding: EdgeInsets.all(20),
+                      padding: const EdgeInsets.all(17),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(6),
                       )),
                 )
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 16,
             ),
             Flexible(
@@ -70,11 +82,12 @@ class _TodoListPageState extends State<TodoListPage> {
               child: ListView(
                 shrinkWrap: true, //vai fazer o calculo do tamanho da tela
                 children: [
-                  for (Todo todo in todos) TodoListItem(todo: todo)
+                  for (Todo todo in todos)
+                    TodoListItem(todo: todo, onDelete: onDelete)
                 ],
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 16,
             ),
             Row(
@@ -82,18 +95,18 @@ class _TodoListPageState extends State<TodoListPage> {
                 Expanded(
                     child:
                         Text('Você possui ${todos.length} tarefas pendentes')),
-                SizedBox(
+                const SizedBox(
                   width: 8,
                 ),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: onDeleAll,
                   child: Text(
                     'Limpar tudo',
                     style: TextStyle(color: Colors.white, fontSize: 15),
                   ),
                   style: ElevatedButton.styleFrom(
                       backgroundColor: Color(0xff00d7f3),
-                      padding: EdgeInsets.all(22),
+                      padding: const EdgeInsets.all(17),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(6))),
                 )
