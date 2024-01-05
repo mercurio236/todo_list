@@ -18,13 +18,41 @@ class _TodoListPageState extends State<TodoListPage> {
   Todo? deletedTodo;
   int? deletedTodoPos;
 
-  void addTodo() {
+  String addTodo() {
     String text = todoController.text;
+    if (text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Row(children: [
+          Icon(
+            Icons.warning,
+            color: Colors.white,
+          ),
+          SizedBox(
+            width: 20,
+          ),
+          Expanded(
+            child: Text(
+              'Preencha o campo com uma tarefa',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          )
+        ]),
+        backgroundColor: Color.fromARGB(255, 224, 195, 5),
+        action: SnackBarAction(
+          label: 'Fechar',
+          onPressed: () {},
+          textColor: Colors.white,
+        ),
+      ));
+      return '';
+    }
+
     setState(() {
       Todo newTodo = Todo(title: text, date: DateTime.now());
       todos.add(newTodo);
     });
     todoController.clear();
+    return '';
   }
 
   void onDelete(Todo todo) {
@@ -69,6 +97,53 @@ class _TodoListPageState extends State<TodoListPage> {
     setState(() {
       todos.clear();
     });
+    Navigator.of(context).pop();
+
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Row(
+        children: [
+          Icon(
+            Icons.delete,
+            color: Colors.white,
+          ),
+          SizedBox(
+            width: 5,
+          ),
+          Expanded(child: Text('Suas tarefas forma deletadas com sucesso!'))
+        ],
+      ),
+      backgroundColor: Colors.red,
+      duration: Duration(seconds: 5),
+    ));
+  }
+
+  void showDeleteTodosConfirmationdialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Lipar tudo?'),
+        content: Text('Todas as tarefas serão apagadas'),
+        actions: [
+          TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Cancelar')),
+          TextButton(
+            onPressed: onDeleAll,
+            child: Text(
+              'Limpar tudo',
+              style: TextStyle(color: Colors.white),
+            ),
+            style: TextButton.styleFrom(
+              backgroundColor: Colors.red,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(3)),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -115,7 +190,8 @@ class _TodoListPageState extends State<TodoListPage> {
             Flexible(
               // faz com que ocupe o máximo de tamanho
               child: ListView(
-                shrinkWrap: true, //vai fazer o calculo do tamanho da tela
+               
+                //shrinkWrap: true, //vai fazer o calculo do tamanho da tela
                 children: [
                   for (Todo todo in todos)
                     TodoListItem(todo: todo, onDelete: onDelete)
@@ -134,7 +210,7 @@ class _TodoListPageState extends State<TodoListPage> {
                   width: 8,
                 ),
                 ElevatedButton(
-                  onPressed: onDeleAll,
+                  onPressed: showDeleteTodosConfirmationdialog,
                   child: Text(
                     'Limpar tudo',
                     style: TextStyle(color: Colors.white, fontSize: 15),
