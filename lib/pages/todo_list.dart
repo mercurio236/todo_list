@@ -43,6 +43,18 @@ class TodoListPage extends StatelessWidget {
             SizedBox(
               height: 16,
             ),
+            ListView(
+              shrinkWrap: true, //vai fazer o calculo do tamanho da tela
+              children: [
+                Container(
+                  color: Colors.red,
+                  height: 50,
+                )
+              ],
+            ),
+            SizedBox(
+              height: 16,
+            ),
             Row(
               children: [
                 Expanded(child: Text('Você possui 0 tarefas pendentes')),
