@@ -190,7 +190,6 @@ class _TodoListPageState extends State<TodoListPage> {
             Flexible(
               // faz com que ocupe o máximo de tamanho
               child: ListView(
-               
                 //shrinkWrap: true, //vai fazer o calculo do tamanho da tela
                 children: [
                   for (Todo todo in todos)
