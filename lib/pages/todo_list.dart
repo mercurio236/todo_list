@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo_list/models/todo.dart';
+import 'package:todo_list/repositories/todo_repository.dart';
 import 'package:todo_list/widgets/todo_list_item.dart';
 
 class TodoListPage extends StatefulWidget {
@@ -12,11 +13,24 @@ class TodoListPage extends StatefulWidget {
 
 class _TodoListPageState extends State<TodoListPage> {
   final TextEditingController todoController = TextEditingController();
+  final TodoRepository todoRepository = TodoRepository();
 
   List<Todo> todos = [];
 
   Todo? deletedTodo;
   int? deletedTodoPos;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    todoRepository.getTodoList().then((value) {
+      setState(() {
+        todos = value;
+      });
+    });
+  }
 
   String addTodo() {
     String text = todoController.text;
@@ -52,6 +66,7 @@ class _TodoListPageState extends State<TodoListPage> {
       todos.add(newTodo);
     });
     todoController.clear();
+    todoRepository.saveTodoList(todos);
     return '';
   }
 
@@ -62,6 +77,8 @@ class _TodoListPageState extends State<TodoListPage> {
     setState(() {
       todos.remove(todo);
     });
+
+    todoRepository.saveTodoList(todos);
 
     ScaffoldMessenger.of(context).clearSnackBars();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -86,6 +103,7 @@ class _TodoListPageState extends State<TodoListPage> {
           setState(() {
             todos.insert(deletedTodoPos!, deletedTodo!);
           });
+          todoRepository.saveTodoList(todos);
         },
         textColor: Colors.white,
       ),
@@ -97,6 +115,7 @@ class _TodoListPageState extends State<TodoListPage> {
     setState(() {
       todos.clear();
     });
+    todoRepository.saveTodoList(todos);
     Navigator.of(context).pop();
 
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
